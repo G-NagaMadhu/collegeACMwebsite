@@ -15,18 +15,45 @@
   <style>
     @media (max-width: 768px) {
       .about-hero-banner {
-        min-height: 380px !important;
-        max-height: 400px !important;
-        height: 380px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 1.8 / 1 !important;
+        min-height: 180px !important;
+        max-height: 320px !important;
         padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
       }
       .about-hero-slide {
-        background-size: cover !important;
-        background-position: center 15% !important;
+        background-size: 100% 100% !important;
+        background-position: center center !important;
+        background-repeat: no-repeat !important;
         transform: none !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+      .about-hero-slide:nth-child(3) {
+        background-image: url('assets/images/gallery/gallery-4-mobile.jpg') !important;
       }
       .about-hero-controls {
-        bottom: 16px !important;
+        bottom: 8px !important;
+        gap: 6px !important;
+      }
+      .hero-slider-arrow {
+        width: 26px !important;
+        height: 26px !important;
+        font-size: 11px !important;
+        background: rgba(0, 0, 0, 0.4) !important;
+      }
+      .about-hero-dot {
+        width: 7px !important;
+        height: 7px !important;
+      }
+      .about-hero-dot.active {
+        width: 18px !important;
       }
     }
   </style>
@@ -101,6 +128,7 @@
         <span class="marquee-divider">•</span>
       </div>
     </div>
+    <a href="events.html" class="event-marquee-cta-link">Click to Events &rarr;</a>
   </div>
 
   <!-- ===================== ABOUT HERO BANNER (Full Page Width with Background Slider) ===================== -->

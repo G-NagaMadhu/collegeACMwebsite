@@ -132,6 +132,9 @@
             <canvas id="activityChart"></canvas>
           </div>
         </div>
+        <div class="ev-chart-year-buttons" id="ev-chart-year-buttons">
+          <span class="ev-year-btns-label">Click to view events:</span>
+        </div>
       </div>
 
       <!-- 6-Card Category Grid -->
@@ -380,6 +383,271 @@
           }
         };
 
+        function escapeHtml(str) {
+          if (!str) return '';
+          return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+        }
+
+        function hexToRgba(hex, alpha) {
+          if (!hex) return 'rgba(20, 80, 158, ' + alpha + ')';
+          hex = hex.replace('#', '');
+          if (hex.length === 3) {
+            hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+          }
+          var r = parseInt(hex.substring(0, 2), 16) || 0;
+          var g = parseInt(hex.substring(2, 4), 16) || 0;
+          var b = parseInt(hex.substring(4, 6), 16) || 0;
+          return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+        }
+
+        function ensureYearModalDOM() {
+          var backdrop = document.getElementById('ev-year-modal-backdrop');
+          if (backdrop) return backdrop;
+
+          backdrop = document.createElement('div');
+          backdrop.id = 'ev-year-modal-backdrop';
+          backdrop.className = 'ev-year-modal-backdrop';
+          backdrop.innerHTML =
+            '<div class="ev-year-modal" role="dialog" aria-modal="true" aria-labelledby="ev-ym-title">' +
+              '<div class="ev-year-modal-header">' +
+                '<div class="ev-year-modal-topbar">' +
+                  '<span class="ev-year-modal-badge" id="ev-ym-badge">' +
+                    '<span class="ev-year-modal-dot"></span>' +
+                    '<span id="ev-ym-badge-text">Year Archive</span>' +
+                  '</span>' +
+                  '<button class="ev-year-modal-close" id="ev-year-modal-close" aria-label="Close dialog">&times;</button>' +
+                '</div>' +
+                '<h3 class="ev-year-modal-title" id="ev-ym-title">Events Conducted</h3>' +
+                '<div class="ev-year-modal-sub" id="ev-ym-sub"></div>' +
+                '<div class="ev-year-filter-bar" id="ev-year-filter-bar"></div>' +
+              '</div>' +
+              '<div class="ev-year-modal-body" id="ev-year-modal-body"></div>' +
+            '</div>';
+
+          document.body.appendChild(backdrop);
+
+          var closeBtn = document.getElementById('ev-year-modal-close');
+          if (closeBtn) {
+            closeBtn.addEventListener('click', closeYearEventsModal);
+          }
+
+          backdrop.addEventListener('click', function (e) {
+            if (e.target === backdrop) {
+              closeYearEventsModal();
+            }
+          });
+
+          backdrop.addEventListener('touchmove', function (e) {
+            if (!e.target.closest('.ev-year-modal-body')) {
+              e.preventDefault();
+            }
+          }, { passive: false });
+
+          document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' || e.keyCode === 27) {
+              closeYearEventsModal();
+            }
+          });
+
+          return backdrop;
+        }
+
+        function closeYearEventsModal() {
+          var backdrop = document.getElementById('ev-year-modal-backdrop');
+          if (backdrop) {
+            backdrop.classList.remove('is-open');
+          }
+          document.documentElement.classList.remove('modal-open');
+          document.body.classList.remove('modal-open');
+          document.documentElement.style.overflow = '';
+          document.body.style.overflow = '';
+        }
+
+        function openYearEventsModal(year, activeCatKey) {
+          year = parseInt(year, 10);
+          var backdrop = ensureYearModalDOM();
+          if (!backdrop) return;
+
+          var allEvents = (typeof EV_ALL_INSTANCES !== 'undefined' ? EV_ALL_INSTANCES : []).filter(function (e) {
+            return Number(e.year) === year;
+          });
+
+          var badgeTextEl = document.getElementById('ev-ym-badge-text');
+          var titleEl = document.getElementById('ev-ym-title');
+          var subEl = document.getElementById('ev-ym-sub');
+          var filterBarEl = document.getElementById('ev-year-filter-bar');
+          var bodyEl = document.getElementById('ev-year-modal-body');
+
+          if (badgeTextEl) badgeTextEl.textContent = 'Year ' + year + ' Archive';
+          if (titleEl) titleEl.textContent = 'Events Conducted in ' + year;
+
+          // Group categories present in this year
+          var presentCatMap = {};
+          allEvents.forEach(function (e) {
+            var k = e.category || 'technizen';
+            presentCatMap[k] = (presentCatMap[k] || 0) + 1;
+          });
+
+          var presentCatKeys = Object.keys(presentCatMap);
+          if (subEl) {
+            var evCountText = allEvents.length + ' event' + (allEvents.length !== 1 ? 's' : '') + ' organized';
+            var catCountText = presentCatKeys.length + ' technical categor' + (presentCatKeys.length !== 1 ? 'ies' : 'y');
+            subEl.textContent = evCountText + ' across ' + catCountText;
+          }
+
+          var currentFilter = 'all';
+
+          function renderFilterChips() {
+            if (!filterBarEl) return;
+            filterBarEl.innerHTML = '';
+
+            if (presentCatKeys.length <= 1) {
+              filterBarEl.style.display = 'none';
+              return;
+            }
+            filterBarEl.style.display = 'flex';
+
+            var allChip = document.createElement('button');
+            allChip.type = 'button';
+            allChip.className = 'ev-year-filter-chip' + (currentFilter === 'all' ? ' is-active' : '');
+            allChip.innerHTML = 'All (' + allEvents.length + ')';
+            allChip.addEventListener('click', function () {
+              currentFilter = 'all';
+              renderFilterChips();
+              renderEventCards();
+            });
+            filterBarEl.appendChild(allChip);
+
+            presentCatKeys.forEach(function (k) {
+              var cat = (typeof EV_CATEGORIES !== 'undefined' && EV_CATEGORIES[k]) ? EV_CATEGORIES[k] : { name: k, color: '#14509e' };
+              var chip = document.createElement('button');
+              chip.type = 'button';
+              chip.className = 'ev-year-filter-chip' + (currentFilter === k ? ' is-active' : '');
+              chip.innerHTML = '<span class="ev-year-chip-dot" style="color:' + cat.color + '"></span>' + escapeHtml(cat.name) + ' (' + presentCatMap[k] + ')';
+              chip.addEventListener('click', function () {
+                currentFilter = k;
+                renderFilterChips();
+                renderEventCards();
+              });
+              filterBarEl.appendChild(chip);
+            });
+          }
+
+          function renderEventCards() {
+            if (!bodyEl) return;
+            bodyEl.innerHTML = '';
+
+            var filteredEvents = allEvents;
+            if (currentFilter !== 'all') {
+              filteredEvents = allEvents.filter(function (e) {
+                return (e.category || 'technizen') === currentFilter;
+              });
+            }
+
+            if (filteredEvents.length === 0) {
+              bodyEl.innerHTML = '<div class="ev-year-empty">No events found for this category in ' + year + '.</div>';
+              return;
+            }
+
+            filteredEvents.forEach(function (ev, idx) {
+              var cat = (typeof EV_CATEGORIES !== 'undefined' && EV_CATEGORIES[ev.category]) ? EV_CATEGORIES[ev.category] : { name: ev.category || 'Event', color: '#14509e' };
+              var catColor = cat.color || '#14509e';
+              var catBg = hexToRgba(catColor, 0.1);
+              var dateStr = ev.date || (ev.day && ev.month ? (ev.day + ' ' + ev.month + ' ' + ev.year) : String(ev.year));
+              var descText = ev.description || ev.desc || '';
+              var fullDesc = ev.desc || ev.description || '';
+              var isOngoing = (ev.status === 'ongoing' || ev.year === 2026);
+              var hasFields = (ev.fields && Object.keys(ev.fields).length > 0);
+              var hasMore = hasFields || (fullDesc && fullDesc !== descText);
+
+              var card = document.createElement('div');
+              card.className = 'ev-year-event-card';
+              card.style.setProperty('--card-cat-color', catColor);
+              card.style.setProperty('--card-cat-bg', catBg);
+              card.style.borderLeftColor = catColor;
+
+              var factsHtml = '';
+              if (ev.facts && ev.facts.length > 0) {
+                factsHtml += '<div class="ev-year-facts-row">';
+                ev.facts.forEach(function (f) {
+                  factsHtml += '<span class="ev-year-fact-pill"><strong>' + escapeHtml(f[0]) + '</strong> ' + escapeHtml(f[1] || '') + '</span>';
+                });
+                factsHtml += '</div>';
+              }
+
+              var drawerId = 'ev-drawer-' + year + '-' + idx;
+              var drawerHtml = '';
+              if (hasMore) {
+                drawerHtml += '<div class="ev-year-detail-drawer" id="' + drawerId + '">';
+                if (fullDesc && fullDesc !== descText) {
+                  drawerHtml += '<p style="margin:0 0 6px;color:var(--ink);">' + escapeHtml(fullDesc) + '</p>';
+                }
+                if (hasFields) {
+                  drawerHtml += '<div class="ev-year-field-list">';
+                  Object.keys(ev.fields).forEach(function (fk) {
+                    drawerHtml += '<div class="ev-year-field-item"><strong>' + escapeHtml(fk) + ':</strong> ' + escapeHtml(ev.fields[fk]) + '</div>';
+                  });
+                  drawerHtml += '</div>';
+                }
+                drawerHtml += '</div>';
+              }
+
+              var toggleHtml = '';
+              if (hasMore) {
+                toggleHtml = '<button class="ev-year-detail-toggle" type="button" data-target="' + drawerId + '"><span>Details</span> <span class="toggle-icon">&#9660;</span></button>';
+              }
+
+              card.innerHTML =
+                '<div class="ev-year-card-head">' +
+                  '<div class="ev-year-card-tags">' +
+                    '<span class="ev-year-cat-badge">' + escapeHtml(cat.name) + '</span>' +
+                    (isOngoing ? '<span class="ev-year-status-badge">ONGOING NOW</span>' : '') +
+                  '</div>' +
+                  '<span class="ev-year-date-text">' + escapeHtml(dateStr) + '</span>' +
+                '</div>' +
+                '<h4 class="ev-year-card-title">' + escapeHtml(ev.title) + '</h4>' +
+                '<p class="ev-year-card-desc">' + escapeHtml(descText) + '</p>' +
+                factsHtml +
+                toggleHtml +
+                drawerHtml;
+
+              if (hasMore) {
+                var tBtn = card.querySelector('.ev-year-detail-toggle');
+                var drawer = card.querySelector('#' + drawerId);
+                if (tBtn && drawer) {
+                  tBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    var open = drawer.classList.contains('is-open');
+                    if (open) {
+                      drawer.classList.remove('is-open');
+                      tBtn.classList.remove('is-open');
+                    } else {
+                      drawer.classList.add('is-open');
+                      tBtn.classList.add('is-open');
+                    }
+                  });
+                }
+              }
+
+              bodyEl.appendChild(card);
+            });
+          }
+
+          renderFilterChips();
+          renderEventCards();
+
+          backdrop.classList.add('is-open');
+          document.documentElement.classList.add('modal-open');
+          document.body.classList.add('modal-open');
+          document.documentElement.style.overflow = 'hidden';
+          document.body.style.overflow = 'hidden';
+        }
+
         function showYearDetails(index) {
           var hoverInfo = document.getElementById('ev-chart-hover-info');
           if (!hoverInfo) return;
@@ -407,6 +675,8 @@
           hoverInfo.style.padding = paddingStr;
           hoverInfo.style.borderColor = 'rgba(20, 80, 158, 0.35)';
           hoverInfo.style.boxShadow = '0 4px 14px rgba(20, 80, 158, 0.12)';
+          hoverInfo.style.cursor = 'default';
+          hoverInfo.onclick = null;
         }
 
         function hideYearDetails() {
@@ -433,12 +703,33 @@
               easing: 'easeOutQuart'
             },
             onClick: function (event, activeElements) {
+              var index = null;
+
               if (activeElements && activeElements.length > 0) {
-                var index = activeElements[0].index;
+                index = activeElements[0].index;
+              } else {
+                var points = chartInstance.getElementsAtEventForMode(event.native || event, 'index', { intersect: false }, true);
+                if (points && points.length > 0) {
+                  index = points[0].index;
+                } else if (chartInstance.scales && chartInstance.scales.x) {
+                  var rect = canvas.getBoundingClientRect();
+                  var clientX = (event.native && event.native.clientX !== undefined) ? event.native.clientX : (event.x || 0);
+                  var xPos = clientX - rect.left;
+                  var val = chartInstance.scales.x.getValueForPixel(xPos);
+                  if (typeof val === 'number' && val >= 0 && val < years.length) {
+                    index = Math.round(val);
+                  }
+                }
+              }
+
+              if (index !== null && index !== undefined && years[index]) {
+                var clickedYear = parseInt(years[index], 10);
                 showYearDetails(index);
+                openYearEventsModal(clickedYear);
               }
             },
             onHover: function (event, activeElements) {
+              canvas.style.cursor = (activeElements && activeElements.length > 0) ? 'pointer' : 'default';
               var isMobile = (window.innerWidth <= 768);
               if (isMobile) return; // On mobile, display year details on tap/click only
               if (activeElements && activeElements.length > 0) {
@@ -530,6 +821,25 @@
             chartInstance.update();
           }
         });
+
+        /* Initialize Year Buttons */
+        var yearBtnsContainer = document.getElementById('ev-chart-year-buttons');
+        if (yearBtnsContainer) {
+          yearBtnsContainer.innerHTML = '<span class="ev-year-btns-label">Click to view events:</span>';
+          years.forEach(function (y) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'ev-year-select-btn' + (y === '2026' ? ' is-current' : '');
+            btn.textContent = y;
+            btn.setAttribute('aria-label', 'View events conducted in ' + y);
+            btn.addEventListener('click', function () {
+              var idx = years.indexOf(y);
+              if (idx !== -1) showYearDetails(idx);
+              openYearEventsModal(parseInt(y, 10));
+            });
+            yearBtnsContainer.appendChild(btn);
+          });
+        }
       }
 
       if (typeof Chart !== 'undefined') {

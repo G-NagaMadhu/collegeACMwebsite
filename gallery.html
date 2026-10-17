@@ -97,9 +97,116 @@
       text-align: center;
     }
 
+    /* ============ Two-Column Gallery Layout with Left Vertical Year Bar ============ */
+    .gallery-layout-wrap {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      max-width: 1160px;
+      margin: 24px auto 80px;
+      position: relative;
+    }
+
+    .gallery-year-bar {
+      flex: 0 0 82px;
+      width: 82px;
+      position: sticky;
+      top: 96px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 6px;
+      box-shadow: 0 4px 16px rgba(11, 31, 77, 0.05);
+      z-index: 20;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .year-bar-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #5b6478;
+      padding-bottom: 8px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .year-bar-track {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      max-height: calc(85vh - 120px);
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .year-bar-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .year-bar-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 7px 4px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: transparent;
+      color: #5b6478;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+      line-height: 1.2;
+    }
+
+    .year-bar-btn:hover {
+      background: #eaf1fb;
+      color: #14509e;
+      border-color: #cbd5e1;
+      transform: translateX(2px);
+    }
+
+    .year-bar-btn.active {
+      background: #0b1f4d;
+      color: #ffffff;
+      border-color: #0b1f4d;
+      font-weight: 700;
+      box-shadow: 0 3px 8px rgba(11, 31, 77, 0.25);
+    }
+
+    .year-bar-btn.is-current:not(.active) {
+      color: #9a7312;
+      border-color: rgba(200, 161, 58, 0.4);
+      background: rgba(200, 161, 58, 0.08);
+      font-weight: 700;
+    }
+
+    .year-bar-btn .yb-badge {
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+
+    .gallery-main-showcase {
+      flex: 1 1 0;
+      min-width: 0;
+      width: 100%;
+    }
+
     .jump-row {
-      max-width: 1120px;
-      margin: 22px auto 0;
+      width: 100%;
+      margin: 0 auto;
       padding: 0;
       display: flex;
       gap: 8px;
@@ -151,8 +258,8 @@
 
     /* ============ Single Reel Showcase ============ */
     .reels {
-      max-width: 1120px;
-      margin: 34px auto 80px;
+      width: 100%;
+      margin: 24px auto 0;
       padding: 0;
       min-height: 280px;
     }
@@ -619,6 +726,82 @@
         overflow: hidden !important;
         text-overflow: ellipsis !important;
       }
+
+      .gallery-layout-wrap {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        margin: 12px auto 32px auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+      }
+
+      .gallery-year-bar {
+        position: sticky !important;
+        top: 60px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 auto !important;
+        padding: 6px 10px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 8px !important;
+        background: rgba(255, 255, 255, 0.96) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+        box-sizing: border-box !important;
+        z-index: 50 !important;
+      }
+
+      .year-bar-title {
+        border-bottom: none !important;
+        border-right: 1px solid #e2e8f0 !important;
+        padding-bottom: 0 !important;
+        padding-right: 8px !important;
+        margin-bottom: 0 !important;
+        font-size: 9px !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+      }
+
+      .year-bar-track {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 5px !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        width: 100% !important;
+        max-height: none !important;
+        padding: 2px 0 !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+      }
+
+      .year-bar-track::-webkit-scrollbar {
+        display: none !important;
+      }
+
+      .year-bar-btn {
+        width: auto !important;
+        min-width: 44px !important;
+        padding: 4px 8px !important;
+        flex-shrink: 0 !important;
+        font-size: 11px !important;
+        border-radius: 6px !important;
+      }
+
+      .year-bar-btn:hover {
+        transform: none !important;
+      }
+
+      .gallery-main-showcase {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
     }
   </style>
 </head>
@@ -723,14 +906,24 @@
       </div>
 
       <div class="v2-section-head">
-        <div class="eyebrow">Chapter Moments</div>
-        <h2>Browse by Event</h2>
+        <div class="eyebrow" id="gallery-eyebrow">Chapter Moments</div>
+        <h2 id="gallery-heading">Browse by Event</h2>
         <div class="rule"></div>
       </div>
 
-      <div class="jump-row" id="jump-row"></div>
+      <div class="gallery-layout-wrap">
+        <!-- Left Vertical Year Bar to select a particular year -->
+        <aside class="gallery-year-bar" id="gallery-year-bar" aria-label="Filter photos by year">
+          <div class="year-bar-title">YEAR</div>
+          <div class="year-bar-track" id="year-bar-track"></div>
+        </aside>
 
-      <div class="reels" id="reels"></div>
+        <!-- Main Showcase Area -->
+        <div class="gallery-main-showcase">
+          <div class="jump-row" id="jump-row"></div>
+          <div class="reels" id="reels"></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -806,24 +999,369 @@
       'assets/images/gallery/gallery-10.jpg'
     ];
 
+    const YEARS = ['all', '2026', '2025', '2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017'];
+    let selectedYear = 'all';
+
     const EVENTS = [
-      { id: 'hoc', name: 'Hour of Code', abbr: 'HC', color: '#2e7d6b', meta: '5 events · since 2018', photos: ['Hour of Code Batch 1', 'Hour of Code Batch 2', 'Volunteer Briefing', 'Certificate Handover'] },
-      { id: 'outreach', name: 'Outreach Programs', abbr: 'OP', color: '#b5502f', meta: '8 schools · since 2019', photos: ['School Visit — Guntur', 'Awareness Drive, ZPHS', 'Coding Basics for Kids', 'Volunteer Team Photo', 'Community Outreach Day', 'Kids Coding Demo'] },
-      { id: 'guest', name: 'Guest Lectures', abbr: 'GL', color: '#8b5cf6', meta: '5 speakers · 2017–2023', photos: ['Future Readiness Talk', 'Micro Services Session', 'Inauguration 2017', 'SMAC Technologies Talk', 'Q&A with Students', 'Certificate Distribution'] },
-      { id: 'workshop', name: 'Technical Workshops', abbr: 'TW', color: '#10b981', meta: '2 workshops · since 2019', photos: ['Python Hands-on Session', 'Git & GitHub Workshop', 'Lab Session in Progress', 'Group Discussion'] },
-      { id: 'intra', name: 'Intra Collegiate Tech Events', abbr: 'IT', color: '#14509e', meta: '24 events · since 2017', photos: ['Pixel Craft Round 1', 'Technoverse Quiz Final', 'Hackathon Overnight', 'Coding Contest Winners', 'Judges Panel', 'Team Presentations'] },
-      { id: 'technizen', name: 'Inter Collegiate Tech Events', abbr: 'IC', color: '#0284c7', meta: '6 sub-events · Aug 2026', photos: ['Opening Ceremony', 'Query Masters Finale', 'DSA Clash Round 2', 'AI Innovators Arena', 'Build & Pitch Demo', 'Prize Distribution', 'Registration Desk', 'Crowd at Main Hall'] }
+      {
+        id: 'technizen',
+        name: 'Inter Collegiate Tech Events',
+        abbr: 'IC',
+        color: '#0284c7',
+        meta: 'Flagship fests · 2019–2026',
+        items: [
+          { title: 'Technizen 2K26 Opening Ceremony', year: 2026, desc: 'Flagship Fest Opening' },
+          { title: 'Query Masters Finale', year: 2026, desc: 'Database Optimization Arena' },
+          { title: 'DSA Clash Round 2', year: 2026, desc: 'Algorithm & Data Structure Sprint' },
+          { title: 'AI Innovators Arena', year: 2026, desc: 'Machine Learning Showcase' },
+          { title: 'Pixel Craft Design Round', year: 2026, desc: 'UI/UX Design Challenge' },
+          { title: 'Build & Pitch Demo Stage', year: 2026, desc: 'Startup Ideation & Pitching' },
+          { title: 'Technoverse Research Symposium', year: 2026, desc: 'Paper & Project Presentations' },
+          { title: 'Technizen 2K24 Main Stage', year: 2024, desc: 'National Tech Fest 2K24' },
+          { title: 'Competitive Track Arena 2K24', year: 2024, desc: 'High Intensity Contests' },
+          { title: 'Exhibition & Pitching Hub 2K24', year: 2024, desc: 'Student Innovation Expo' },
+          { title: 'Explore-IT 2021 PPT Contest', year: 2021, desc: 'Online Presentation Contest' },
+          { title: 'AI Innovation Track 2021', year: 2021, desc: 'Specialized Tech Presentation' },
+          { title: 'Code Challenger 2020', year: 2020, desc: 'Inter-Collegiate Coding Contest' },
+          { title: 'Technizen 2K19 Tech-End', year: 2019, desc: 'Inaugural Inter-Collegiate Fest' },
+          { title: 'Logic Mystery Lab 2019', year: 2019, desc: 'Reasoning & Logic Challenge' }
+        ]
+      },
+      {
+        id: 'intra',
+        name: 'Intra Collegiate Tech Events',
+        abbr: 'IT',
+        color: '#14509e',
+        meta: 'Department competitions · 2017–2026',
+        items: [
+          { title: '“INTELLEX” Coding Contest 2026', year: 2026, desc: 'Where Intelligence Meets Logic' },
+          { title: 'Logic Round 1 — INTELLEX', year: 2026, desc: '496 Teams Competing' },
+          { title: 'TechSpark-2025 Project Expo', year: 2025, desc: 'Project-Based Contest for IV B.Tech' },
+          { title: '“C-Quence” Coding Arena 2025', year: 2025, desc: 'Code it, Compile it, Conquer it' },
+          { title: 'Computer Fiesta Quiz 2024', year: 2024, desc: 'Tech Themed Contests' },
+          { title: 'CODAGE Contest 2024', year: 2024, desc: 'Data Structures Competition' },
+          { title: 'CODEWIZ Python Contest 2023', year: 2023, desc: 'Hands-on Coding Arena' },
+          { title: 'ESTRATEGIA C Programming 2022', year: 2022, desc: 'Core Programming Challenge' },
+          { title: 'CODEWIZ Python Contest 2022', year: 2022, desc: 'Python Speed Challenge' },
+          { title: 'CODAGE Challenge 2021', year: 2021, desc: 'Online Programming Contest' },
+          { title: 'CODAGE on Data Structures 2020', year: 2020, desc: 'Competitive Algorithm Contest' },
+          { title: 'Techstalk: Tech Hunt 2019', year: 2019, desc: 'Tech Hunt Challenge' },
+          { title: 'Tech Maerid Project Expo 2019', year: 2019, desc: 'Student Project Exhibition' },
+          { title: 'Query Cracking Contest 2019', year: 2019, desc: 'Database Design Competition' },
+          { title: 'THEME PARAUSIASI 2018', year: 2018, desc: 'Paper Presentation Contest' },
+          { title: 'Estrategia Contest 2018', year: 2018, desc: 'Strategic Coding Contest' },
+          { title: 'Multi-Core Programming 2017', year: 2017, desc: 'Parallel Processing Challenge' },
+          { title: 'Logo & Web Page Design 2017', year: 2017, desc: 'Creative Web Contest' },
+          { title: 'Reverse Coding Contest 2017', year: 2017, desc: 'Logic Deconstruction' }
+        ]
+      },
+      {
+        id: 'hoc',
+        name: 'Hour of Code',
+        abbr: 'HC',
+        color: '#2e7d6b',
+        meta: 'School outreach initiatives · 2018–2025',
+        items: [
+          { title: 'Yanamadala ZPHS Drive 2025', year: 2025, desc: 'High School Coding Workshop' },
+          { title: 'Student Certificates 2025', year: 2025, desc: 'Hour of Code Recognition' },
+          { title: 'ZPHS High School Drive 2023', year: 2023, desc: 'Hands-on Computer Literacy' },
+          { title: 'Virtual Hour of Code 2020', year: 2020, desc: 'Online Coding Experience' },
+          { title: 'Bala Kuteer School Drive 2019', year: 2019, desc: 'Logic Building Fundamentals' },
+          { title: 'Inaugural Hour of Code 2018', year: 2018, desc: 'Yanamadala ZPHS School Visit' }
+        ]
+      },
+      {
+        id: 'outreach',
+        name: 'Outreach Programs',
+        abbr: 'OP',
+        color: '#b5502f',
+        meta: 'Social & campus awareness · 2019–2026',
+        items: [
+          { title: 'ACM Outreach Program 2026', year: 2026, desc: 'Community Engagement Drive' },
+          { title: 'Awareness Drive for Students 2025', year: 2025, desc: 'Academic Empowerment Program' },
+          { title: 'Student Benefits Program 2024', year: 2024, desc: 'Department Awareness Session' },
+          { title: 'Community Outreach Day 2023', year: 2023, desc: 'Digital Inclusion Drive' },
+          { title: 'Technology Awareness 2022', year: 2022, desc: 'Tech Literacy Campaign' },
+          { title: 'ACM Chapter Awareness 2021', year: 2021, desc: 'Student Outreach Program' },
+          { title: 'Inaugural Awareness Drive 2019', year: 2019, desc: 'Department Membership Drive' }
+        ]
+      },
+      {
+        id: 'guest',
+        name: 'Guest Lectures',
+        abbr: 'GL',
+        color: '#8b5cf6',
+        meta: 'Distinguished speakers · 2017–2023',
+        items: [
+          { title: 'Future Readiness Orientation 2023', year: 2023, desc: 'Industry-Higher Studies Guidance' },
+          { title: 'Micro Services & Implementation 2021', year: 2021, desc: 'Cloud Architecture Talk' },
+          { title: 'Chapter Inauguration 2017', year: 2017, desc: 'Inauguration Ceremony' },
+          { title: 'SMAC Technologies & Future 2017', year: 2017, desc: 'Keynote by Sri S. Ramasamy' }
+        ]
+      },
+      {
+        id: 'workshop',
+        name: 'Technical Workshops',
+        abbr: 'TW',
+        color: '#10b981',
+        meta: 'Hands-on practical training · 2019–2020',
+        items: [
+          { title: 'Data Structures using Python 2020', year: 2020, desc: 'Online Workshop by Dr. M. Sreelatha' },
+          { title: 'Python Implementation Session 2020', year: 2020, desc: '3-Day Hands-on Training' },
+          { title: 'Techstalk Workshop 2019', year: 2019, desc: 'Hands-on Skill Session' }
+        ]
+      }
     ];
 
+    const yearBarTrack = document.getElementById('year-bar-track');
     const jumpRow = document.getElementById('jump-row');
     const reelsEl = document.getElementById('reels');
+    const galleryEyebrow = document.getElementById('gallery-eyebrow');
+    const galleryHeading = document.getElementById('gallery-heading');
+
+    let currentSelectedEvId = 'technizen';
     let currentReelPhotos = [];
     let lbIndex = 0;
-    let globalImgCounter = 0;
+    let activeReels = [];
 
-    const activeReels = [];
+    // Render Left Vertical Year Bar
+    function initYearBar() {
+      if (!yearBarTrack) return;
+      yearBarTrack.innerHTML = '';
+      YEARS.forEach(y => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'year-bar-btn' + (y === selectedYear ? ' active' : '') + (y === '2026' ? ' is-current' : '');
+        btn.setAttribute('data-year', y);
+        btn.setAttribute('aria-label', y === 'all' ? 'Show all years' : 'Filter by ' + y);
+
+        const label = y === 'all' ? 'All' : y;
+        const sub = y === 'all' ? 'All' : (y === '2026' ? 'Fest' : '');
+        btn.innerHTML = `${label}${sub ? `<span class="yb-badge">${sub}</span>` : ''}`;
+
+        btn.addEventListener('click', () => {
+          selectYear(y);
+          if (window.innerWidth <= 768) {
+            btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }
+        });
+        yearBarTrack.appendChild(btn);
+      });
+    }
+
+    function selectYear(y) {
+      selectedYear = y;
+      document.querySelectorAll('.year-bar-btn').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-year') === y);
+      });
+
+      if (galleryHeading) {
+        galleryHeading.textContent = y === 'all' ? 'Browse by Event' : `Moments from ${y}`;
+      }
+      if (galleryEyebrow) {
+        galleryEyebrow.textContent = y === 'all' ? 'Chapter Moments' : `${y} Archive`;
+      }
+
+      renderCategoryChipsAndReels();
+    }
+
+    function renderCategoryChipsAndReels() {
+      jumpRow.innerHTML = '';
+      reelsEl.innerHTML = '';
+      activeReels = [];
+      let globalImgCounter = 0;
+
+      const availableCategories = [];
+      EVENTS.forEach((ev, idx) => {
+        const items = ev.items.filter(it => selectedYear === 'all' || it.year === parseInt(selectedYear, 10));
+        if (items.length > 0) {
+          availableCategories.push({ ev, items, idx });
+        }
+      });
+
+      if (!availableCategories.some(c => c.ev.id === currentSelectedEvId)) {
+        currentSelectedEvId = availableCategories.length > 0 ? availableCategories[0].ev.id : 'technizen';
+      }
+
+      availableCategories.forEach(({ ev, items, idx }) => {
+        const chip = document.createElement('button');
+        chip.id = 'chip-' + ev.id;
+        chip.innerHTML = `<span class="chip-dot" style="background:${ev.color}"></span>${ev.name} <span style="opacity:0.75;font-size:11px;margin-left:2px;">(${items.length})</span>`;
+        chip.addEventListener('mouseenter', () => {
+          if (!chip.classList.contains('active')) {
+            chip.style.borderColor = ev.color;
+            chip.style.color = ev.color;
+            chip.style.background = ev.color + '14';
+          }
+        });
+        chip.addEventListener('mouseleave', () => {
+          if (!chip.classList.contains('active')) {
+            chip.style.borderColor = '';
+            chip.style.color = '';
+            chip.style.background = '';
+          }
+        });
+        chip.addEventListener('click', () => {
+          selectEventReel(ev.id);
+          chip.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        });
+        jumpRow.appendChild(chip);
+
+        const reel = document.createElement('div');
+        reel.className = 'reel';
+        reel.id = 'reel-' + ev.id;
+        reel.innerHTML = `
+          <div class="reel-head" style="border-left: 4px solid ${ev.color}; padding-left: 14px;">
+            <div class="left">
+              <div class="reel-title-group">
+                <span class="cat-badge-pill" style="background:${ev.color}">${ev.abbr}</span>
+                <h3>${ev.name}</h3>
+              </div>
+              <span class="meta">${selectedYear === 'all' ? ev.meta : `${items.length} moment${items.length !== 1 ? 's' : ''} in ${selectedYear}`}</span>
+            </div>
+            <div class="reel-nav">
+              <button class="rl-left" aria-label="Scroll left">‹</button>
+              <button class="rl-right" aria-label="Scroll right">›</button>
+            </div>
+          </div>
+          <div class="filmstrip-wrap">
+            <div class="filmstrip" id="strip-${ev.id}"></div>
+          </div>
+        `;
+        reelsEl.appendChild(reel);
+
+        const btnLeft = reel.querySelector('.rl-left');
+        const btnRight = reel.querySelector('.rl-right');
+        [btnLeft, btnRight].forEach(btn => {
+          btn.addEventListener('mouseenter', () => {
+            btn.style.borderColor = ev.color;
+            btn.style.color = ev.color;
+            btn.style.background = ev.color + '15';
+          });
+          btn.addEventListener('mouseleave', () => {
+            btn.style.borderColor = '';
+            btn.style.color = '';
+            btn.style.background = '';
+          });
+        });
+
+        const strip = reel.querySelector('.filmstrip');
+        const startImgIdx = globalImgCounter;
+
+        const reelPhotoList = items.map((it, iIdx) => ({
+          ev,
+          item: it,
+          title: it.title,
+          desc: it.desc,
+          imgSrc: SAMPLE_IMAGES[(startImgIdx + iIdx) % SAMPLE_IMAGES.length]
+        }));
+
+        function createCard(it, i) {
+          const frame = document.createElement('div');
+          frame.className = 'photo-card';
+          frame.style.setProperty('--event-color', ev.color);
+          frame.style.borderColor = ev.color;
+          frame.style.boxShadow = `0 6px 20px ${ev.color}25`;
+          frame.innerHTML = `
+            <div class="img-wrap">
+              <img src="${SAMPLE_IMAGES[(startImgIdx + i) % SAMPLE_IMAGES.length]}" alt="${it.title}" loading="eager">
+              <div style="position:absolute; inset:0; background: linear-gradient(180deg, ${ev.color}18 0%, rgba(255,255,255,0) 40%, rgba(7,23,48,0.28) 100%); pointer-events:none;"></div>
+              <div class="photo-badge">${it.year} &middot; ${ev.abbr}</div>
+            </div>
+            <div class="cap">${it.title}</div>
+          `;
+          frame.addEventListener('mouseenter', () => {
+            frame.style.borderColor = ev.color;
+            frame.style.boxShadow = `0 14px 32px ${ev.color}45`;
+          });
+          frame.addEventListener('mouseleave', () => {
+            frame.style.borderColor = ev.color;
+            frame.style.boxShadow = `0 6px 20px ${ev.color}25`;
+          });
+          frame.addEventListener('click', () => openLightbox(ev, i, reelPhotoList));
+          return frame;
+        }
+
+        const copies = items.length < 5 ? 4 : 2;
+        for (let c = 0; c < copies; c++) {
+          items.forEach((it, i) => {
+            if (c === 0) globalImgCounter++;
+            strip.appendChild(createCard(it, i));
+          });
+        }
+
+        const direction = (idx % 2 === 0) ? 1 : -1;
+        const reelObj = {
+          strip,
+          reelEl: reel,
+          direction,
+          photoCount: items.length,
+          pos: 0,
+          isHovered: false,
+          isInteracting: false,
+          interactTimer: null,
+          getSingleSetWidth: function () {
+            const N = items.length;
+            if (strip.children.length > N) {
+              const w = strip.children[N].offsetLeft - strip.children[0].offsetLeft;
+              if (w > 0) return w;
+            }
+            return strip.scrollWidth / copies;
+          }
+        };
+        activeReels.push(reelObj);
+
+        strip.addEventListener('pointerenter', () => { reelObj.isHovered = true; });
+        strip.addEventListener('pointerleave', () => {
+          reelObj.isHovered = false;
+          const setWidth = reelObj.getSingleSetWidth();
+          if (setWidth > 0) {
+            reelObj.pos = strip.scrollLeft % setWidth;
+          }
+        });
+
+        strip.addEventListener('scroll', () => {
+          if (reelObj.isHovered || reelObj.isInteracting) return;
+          const setWidth = reelObj.getSingleSetWidth();
+          if (setWidth > 0) {
+            reelObj.pos = strip.scrollLeft % setWidth;
+          }
+        }, { passive: true });
+
+        function handleNavClick(dir) {
+          if (window.innerWidth <= 768) {
+            const availIdx = availableCategories.findIndex(c => c.ev.id === ev.id);
+            if (availIdx !== -1) {
+              const targetIdx = (availIdx + dir + availableCategories.length) % availableCategories.length;
+              selectEventReel(availableCategories[targetIdx].ev.id);
+            }
+          } else {
+            reelObj.isInteracting = true;
+            clearTimeout(reelObj.interactTimer);
+            strip.scrollBy({ left: dir * 480, behavior: 'smooth' });
+            reelObj.interactTimer = setTimeout(() => {
+              const setWidth = reelObj.getSingleSetWidth();
+              if (setWidth > 0) {
+                reelObj.pos = strip.scrollLeft % setWidth;
+              }
+              reelObj.isInteracting = false;
+            }, 550);
+          }
+        }
+
+        btnLeft.addEventListener('click', () => handleNavClick(-1));
+        btnRight.addEventListener('click', () => handleNavClick(1));
+      });
+
+      if (availableCategories.length === 0) {
+        reelsEl.innerHTML = `<div style="text-align:center;padding:48px 20px;color:#5b6478;font-family:'JetBrains Mono',monospace;">No photo reels recorded for ${selectedYear}.</div>`;
+      } else {
+        selectEventReel(currentSelectedEvId);
+      }
+    }
 
     function selectEventReel(selectedEvId) {
+      currentSelectedEvId = selectedEvId;
       EVENTS.forEach(ev => {
         const reelEl = document.getElementById('reel-' + ev.id);
         const chipBtn = document.getElementById('chip-' + ev.id);
@@ -855,182 +1393,9 @@
       });
     }
 
-    EVENTS.forEach((ev, idx) => {
-      // Category jump chip with matching category color dot and tab selector action
-      const chip = document.createElement('button');
-      chip.id = 'chip-' + ev.id;
-      chip.innerHTML = `<span class="chip-dot" style="background:${ev.color}"></span>${ev.name}`;
-      chip.addEventListener('mouseenter', () => {
-        if (!chip.classList.contains('active')) {
-          chip.style.borderColor = ev.color;
-          chip.style.color = ev.color;
-          chip.style.background = ev.color + '14';
-        }
-      });
-      chip.addEventListener('mouseleave', () => {
-        if (!chip.classList.contains('active')) {
-          chip.style.borderColor = '';
-          chip.style.color = '';
-          chip.style.background = '';
-        }
-      });
-      chip.addEventListener('click', () => {
-        selectEventReel(ev.id);
-        chip.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      });
-      jumpRow.appendChild(chip);
-
-      // Category reel header featuring category color pill badge and border accent
-      const reel = document.createElement('div');
-      reel.className = 'reel';
-      reel.id = 'reel-' + ev.id;
-      reel.innerHTML = `
-      <div class="reel-head" style="border-left: 4px solid ${ev.color}; padding-left: 14px;">
-        <div class="left">
-          <div class="reel-title-group">
-            <span class="cat-badge-pill" style="background:${ev.color}">${ev.abbr}</span>
-            <h3>${ev.name}</h3>
-          </div>
-          <span class="meta">${ev.meta}</span>
-        </div>
-        <div class="reel-nav">
-          <button class="rl-left" aria-label="Scroll left">‹</button>
-          <button class="rl-right" aria-label="Scroll right">›</button>
-        </div>
-      </div>
-      <div class="filmstrip-wrap">
-        <div class="filmstrip" id="strip-${ev.id}"></div>
-      </div>
-    `;
-      reelsEl.appendChild(reel);
-
-      // Arrow button hover matching category color
-      const btnLeft = reel.querySelector('.rl-left');
-      const btnRight = reel.querySelector('.rl-right');
-      [btnLeft, btnRight].forEach(btn => {
-        btn.addEventListener('mouseenter', () => {
-          btn.style.borderColor = ev.color;
-          btn.style.color = ev.color;
-          btn.style.background = ev.color + '15';
-        });
-        btn.addEventListener('mouseleave', () => {
-          btn.style.borderColor = '';
-          btn.style.color = '';
-          btn.style.background = '';
-        });
-      });
-
-      const strip = reel.querySelector('.filmstrip');
-      const startImgIdx = globalImgCounter;
-
-      const reelPhotoList = ev.photos.map((t, iIdx) => ({
-        ev,
-        title: t,
-        imgSrc: SAMPLE_IMAGES[(startImgIdx + iIdx) % SAMPLE_IMAGES.length]
-      }));
-
-      // Photo card creation with event category dynamic color palette
-      function createCard(title, i) {
-        const frame = document.createElement('div');
-        frame.className = 'photo-card';
-        frame.style.setProperty('--event-color', ev.color);
-        frame.style.borderColor = ev.color;
-        frame.style.boxShadow = `0 6px 20px ${ev.color}25`;
-        frame.innerHTML = `
-        <div class="img-wrap">
-          <img src="${SAMPLE_IMAGES[(startImgIdx + i) % SAMPLE_IMAGES.length]}" alt="${title}" loading="eager">
-          <div style="position:absolute; inset:0; background: linear-gradient(180deg, ${ev.color}18 0%, rgba(255,255,255,0) 40%, rgba(7,23,48,0.28) 100%); pointer-events:none;"></div>
-        </div>
-        <div class="cap">${title}</div>
-      `;
-        frame.addEventListener('mouseenter', () => {
-          frame.style.borderColor = ev.color;
-          frame.style.boxShadow = `0 14px 32px ${ev.color}45`;
-        });
-        frame.addEventListener('mouseleave', () => {
-          frame.style.borderColor = ev.color;
-          frame.style.boxShadow = `0 6px 20px ${ev.color}25`;
-        });
-        frame.addEventListener('click', () => openLightbox(ev, i, reelPhotoList));
-        return frame;
-      }
-
-      // Duplicate tiles to guarantee a continuous, seamless infinite scrolling loop without jump/flicker
-      const copies = ev.photos.length < 5 ? 4 : 2;
-      for (let c = 0; c < copies; c++) {
-        ev.photos.forEach((title, i) => {
-          if (c === 0) globalImgCounter++;
-          strip.appendChild(createCard(title, i));
-        });
-      }
-
-      // Alternating direction: Even rows move left (1), Odd rows move right (-1)
-      const direction = (idx % 2 === 0) ? 1 : -1;
-
-      const reelObj = {
-        strip,
-        reelEl: reel,
-        direction,
-        photoCount: ev.photos.length,
-        pos: 0,
-        isHovered: false,
-        isInteracting: false,
-        interactTimer: null,
-        getSingleSetWidth: function () {
-          const N = ev.photos.length;
-          if (strip.children.length > N) {
-            const w = strip.children[N].offsetLeft - strip.children[0].offsetLeft;
-            if (w > 0) return w;
-          }
-          return strip.scrollWidth / copies;
-        }
-      };
-      activeReels.push(reelObj);
-
-      // Pause auto-marquee on hover
-      strip.addEventListener('pointerenter', () => { reelObj.isHovered = true; });
-      strip.addEventListener('pointerleave', () => {
-        reelObj.isHovered = false;
-        const setWidth = reelObj.getSingleSetWidth();
-        if (setWidth > 0) {
-          reelObj.pos = strip.scrollLeft % setWidth;
-        }
-      });
-
-      // Sync position during manual trackpad/touch scrolling
-      strip.addEventListener('scroll', () => {
-        if (reelObj.isHovered || reelObj.isInteracting) return;
-        const setWidth = reelObj.getSingleSetWidth();
-        if (setWidth > 0) {
-          reelObj.pos = strip.scrollLeft % setWidth;
-        }
-      }, { passive: true });
-
-      // Smooth navigation buttons (On mobile, arrow buttons navigate to previous/next event marquee)
-      function handleNavClick(dir) {
-        if (window.innerWidth <= 768) {
-          const targetIdx = (idx + dir + EVENTS.length) % EVENTS.length;
-          selectEventReel(EVENTS[targetIdx].id);
-        } else {
-          reelObj.isInteracting = true;
-          clearTimeout(reelObj.interactTimer);
-          strip.scrollBy({ left: dir * 480, behavior: 'smooth' });
-          reelObj.interactTimer = setTimeout(() => {
-            const setWidth = reelObj.getSingleSetWidth();
-            if (setWidth > 0) {
-              reelObj.pos = strip.scrollLeft % setWidth;
-            }
-            reelObj.isInteracting = false;
-          }, 550);
-        }
-      }
-
-      reel.querySelector('.rl-left').addEventListener('click', () => handleNavClick(-1));
-      reel.querySelector('.rl-right').addEventListener('click', () => handleNavClick(1));
-    });
-
-    // Default: Display Hour of Code (hoc) single line marquee
-    selectEventReel('hoc');
+    // Initialize Left Vertical Year Bar and Gallery Showcase
+    initYearBar();
+    renderCategoryChipsAndReels();
 
     // Globalised marquee movement using requestAnimationFrame & global speed setting
     let lastTime = performance.now();
